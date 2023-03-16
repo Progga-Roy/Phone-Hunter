@@ -39,7 +39,7 @@ const displayLoadPhone = (phones, dataLimit) => {
         <div class="card-body">
           <h5 class="card-title">${phone.phone_name}</h5>
           <p class="card-text">${phone.brand}</p>
-          <button onclick="loadPhonesDetails('${phone.slug}')" href="#" class="btn btn-primary">Show Details</button>
+          <button onclick="loadPhonesDetails('${phone.slug}')" href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mobileDetail">Show Details</button>
         </div>
        
       </div>
@@ -60,10 +60,10 @@ document.getElementById('search-btn').addEventListener('click', function () {
 
 })
 document.getElementById('search-field').addEventListener('keypress', function (event) {
-    if(event.key ==='Enter'){
+    if (event.key === 'Enter') {
         processSearch(10);
     }
-  
+
 
 })
 
@@ -81,14 +81,23 @@ document.getElementById('btn-show-all').addEventListener('click', function () {
 
 })
 
-const loadPhonesDetails = async(id)=>{
+const loadPhonesDetails = async (id) => {
     const url = `https://openapi.programming-hero.com/api/phone/${id}`
     const res = await fetch(url)
     const data = await res.json()
     displayLoadPhonesDetails(data.data)
 }
-const displayLoadPhonesDetails = (id)=>{
-console.log(id)
+const displayLoadPhonesDetails = (phoneId) => {
+    console.log(phoneId)
+    document.getElementById('mobileDetailLabel').innerText = phoneId.name;
+    const div = document.getElementById('body-details');
+    div.innerHTML =`<img class="img-fluid" src="${phoneId.image}" alt="">
+    <p> Display: ${phoneId.mainFeatures.displaySize}</p>
+    <p> Sensors: ${phoneId.mainFeatures.sensors ? phoneId.mainFeatures.sensors : 'Not Found'}</p>
+    <p> Storage: ${phoneId.mainFeatures.storage ? phoneId.mainFeatures.storage : 'Not Found'}</p>
+    <p> Date: ${phoneId.releaseDate ? phoneId.releaseDate : 'Not Found'} </p>
+    `
+
 }
 
 // loadPhone();
