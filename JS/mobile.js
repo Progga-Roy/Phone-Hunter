@@ -39,7 +39,9 @@ const displayLoadPhone = (phones, dataLimit) => {
         <div class="card-body">
           <h5 class="card-title">${phone.phone_name}</h5>
           <p class="card-text">${phone.brand}</p>
+          <button onclick="loadPhonesDetails('${phone.slug}')" href="#" class="btn btn-primary">Show Details</button>
         </div>
+       
       </div>
         `
         mobileContainer.appendChild(createDiv);
@@ -57,6 +59,14 @@ document.getElementById('search-btn').addEventListener('click', function () {
     processSearch(10);
 
 })
+document.getElementById('search-field').addEventListener('keypress', function (event) {
+    if(event.key ==='Enter'){
+        processSearch(10);
+    }
+  
+
+})
+
 const toggleSpinner = isLoading => {
     const spinningSection = document.getElementById('loader');
     if (isLoading) {
@@ -70,4 +80,15 @@ document.getElementById('btn-show-all').addEventListener('click', function () {
     processSearch()
 
 })
+
+const loadPhonesDetails = async(id)=>{
+    const url = `https://openapi.programming-hero.com/api/phone/${id}`
+    const res = await fetch(url)
+    const data = await res.json()
+    displayLoadPhonesDetails(data.data)
+}
+const displayLoadPhonesDetails = (id)=>{
+console.log(id)
+}
+
 // loadPhone();
